@@ -34,7 +34,8 @@
 ## 安装
 
 ```bash
-npm install -g https://github.com/httruly/opencode-tui-model-router.git
+cd ~/.config/opencode
+npm install https://github.com/httruly/opencode-tui-model-router.git
 ```
 
 然后添加到 OpenCode TUI 配置（`~/.config/opencode/opencode.jsonc`）：
@@ -46,6 +47,8 @@ npm install -g https://github.com/httruly/opencode-tui-model-router.git
   ],
   "disabled_providers": []
 }
+
+重启 OpenCode TUI。
 ```
 
 创建 `~/.config/opencode/tiers.json`：

@@ -34,7 +34,8 @@ Subagent sessions are transparent — they receive only their role-specific inst
 ## Installation
 
 ```bash
-npm install -g https://github.com/httruly/opencode-tui-model-router.git
+cd ~/.config/opencode
+npm install https://github.com/httruly/opencode-tui-model-router.git
 ```
 
 Then add it to your OpenCode TUI config (`~/.config/opencode/opencode.jsonc`):
@@ -46,6 +47,8 @@ Then add it to your OpenCode TUI config (`~/.config/opencode/opencode.jsonc`):
   ],
   "disabled_providers": []
 }
+
+Restart OpenCode TUI.
 ```
 
 Create `~/.config/opencode/tiers.json`:
