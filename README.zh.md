@@ -33,10 +33,6 @@
 
 ## 安装
 
-### 方式一：npm（推荐）
-
-包已发布到 npm：
-
 ```bash
 npm install -g opencode-tui-model-router
 ```
@@ -47,26 +43,6 @@ npm install -g opencode-tui-model-router
 {
   "plugins": [
     "opencode-tui-model-router"
-  ],
-  "disabled_providers": []
-}
-```
-
-### 方式二：本地文件
-
-```bash
-git clone https://github.com/your-username/opencode-tui-model-router.git
-cd opencode-tui-model-router
-npm install
-npx tsc
-```
-
-然后添加本地路径：
-
-```jsonc
-{
-  "plugins": [
-    "/absolute/path/to/opencode-tui-model-router/dist/index.js"
   ],
   "disabled_providers": []
 }
