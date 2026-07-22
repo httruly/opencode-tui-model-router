@@ -114,28 +114,16 @@ Each tier has a structured prompt that includes:
 | Field | Description |
 |-------|-------------|
 | `activePreset` | Which preset to use (e.g. `"local-hybrid"`) |
-| `activeMode` | Routing mode (optional, e.g. `"normal"`, `"budget"`, `"quality"`, `"deep"`) |
-| `defaultTier` | Default tier when classification is ambiguous |
-| `rules` | Delegation rules injected into the system prompt |
 | `presets` | Named presets containing tier definitions |
-| `tierCaps` | Maximum read-only tool calls per dispatch per tier |
+| `rules` | Delegation rules injected into the system prompt |
+| `defaultTier` | Default tier shown in `/tiers` display |
 | `tierPrompts` | Custom role prompts for each tier |
-| `modes` | Routing mode definitions with override rules and default tiers |
+| `activeMode` | Optional — select a mode from `modes` |
+| `modes` | Optional — mode definitions with `overrideRules` to replace `rules` |
 
 ### Multiple Presets
 
-You can define multiple presets and switch between them by changing `activePreset`:
-
-```json
-{
-  "activePreset": "local-hybrid",
-  "presets": {
-    "local-hybrid": { /* local + cloud mix */ },
-    "all-cloud": { /* all cloud models */ },
-    "budget": { /* cheapest models only */ }
-  }
-}
-```
+You can define multiple presets and switch by changing `activePreset`:
 
 ## Architecture
 

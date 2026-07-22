@@ -20,8 +20,6 @@ export interface Preset {
 }
 
 export interface ModeDef {
-  defaultTier: string;
-  description: string;
   overrideRules?: string[];
 }
 
@@ -31,22 +29,8 @@ export interface RouterConfig {
   presets: Record<string, Preset>;
   rules: string[];
   defaultTier: string;
-  defaultModel?: string;
-  tierCaps?: Record<string, number>;
   tierPrompts?: Record<string, string>;
   modes?: Record<string, ModeDef>;
-  fallback?: { global?: Record<string, string[]>; presets?: Record<string, Record<string, string[]>> };
-  taskPatterns?: Record<string, string[]>;
-  enforcement?: {
-    verify?: {
-      require?: string;
-      requireExplicitDoD?: boolean;
-      graderTemperature?: number;
-      minGraderTier?: string | null;
-    };
-    escalate?: { ladder?: string[]; maxAttemptsPerTier?: number; maxTotalAttempts?: number };
-  };
-  experimental?: { verifiedDelegateTool?: boolean };
 }
 
 let _cfg: RouterConfig | null = null;

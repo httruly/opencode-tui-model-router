@@ -114,13 +114,12 @@ npm install -g opencode-tui-model-router
 | 字段 | 说明 |
 |------|------|
 | `activePreset` | 使用的预设名称（如 `"local-hybrid"`） |
-| `activeMode` | 路由模式（可选，如 `"normal"`、`"budget"`、`"quality"`、`"deep"`） |
-| `defaultTier` | 分类不明确时的默认层级 |
-| `rules` | 注入系统提示的委派规则 |
 | `presets` | 包含层级定义的命名预设 |
-| `tierCaps` | 每个层级每次分派的最大只读工具调用次数 |
-| `tierPrompts` | 自定角色提示 |
-| `modes` | 路由模式定义，包含覆盖规则和默认层级 |
+| `rules` | 注入系统提示的委派规则 |
+| `defaultTier` | 在 `/tiers` 中显示的默认层级 |
+| `tierPrompts` | 自定义层级提示词 |
+| `activeMode` | 可选——选择 `modes` 中的一个模式 |
+| `modes` | 可选——模式定义，通过 `overrideRules` 替换 `rules` |
 
 ### 多预设
 
