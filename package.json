@@ -1,0 +1,10 @@
+{
+  "name": "opencode-tui-model-router",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@opencode-ai/plugin": "^1.18.4"
+  }
+}
