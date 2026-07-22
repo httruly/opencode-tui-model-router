@@ -1,8 +1,25 @@
 {
   "name": "opencode-tui-model-router",
   "version": "1.0.0",
-  "type": "module",
+  "description": "OpenCode TUI plugin for automatic model-tier delegation (@fast / @medium / @heavy)",
   "main": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "opencode",
+    "opencode-tui",
+    "plugin",
+    "model-router",
+    "llm",
+    "agent"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/httruly/opencode-tui-model-router.git"
+  },
   "devDependencies": {
     "typescript": "^5.9.3",
     "@opencode-ai/plugin": "^1.18.4"
