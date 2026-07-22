@@ -34,7 +34,7 @@
 ## 安装
 
 ```bash
-npm install -g opencode-tui-model-router
+npm install -g https://github.com/httruly/opencode-tui-model-router.git
 ```
 
 然后添加到 OpenCode TUI 配置（`~/.config/opencode/opencode.jsonc`）：
