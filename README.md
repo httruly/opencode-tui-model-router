@@ -102,6 +102,11 @@ The orchestrator model (your main chat model) dispatches work automatically. You
 |---------|-------------|
 | `/tiers` | Show active tier configuration, models, and rules |
 
+> **Tip:** The orchestrator skips delegation for trivial tasks (1–2 tool calls). To force a subagent dispatch, use explicit delegation phrasing:
+> ```
+> Delegate @fast to list all .ts files in the current directory
+> ```
+
 ### Tier Prompts
 
 Each tier has a structured prompt that includes:
