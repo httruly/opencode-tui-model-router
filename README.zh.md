@@ -33,7 +33,26 @@
 
 ## 安装
 
-插件以本地文件方式加载到 OpenCode TUI 配置中。
+### 方式一：npm（推荐）
+
+包已发布到 npm：
+
+```bash
+npm install -g opencode-tui-model-router
+```
+
+然后添加到 OpenCode TUI 配置（`~/.config/opencode/opencode.jsonc`）：
+
+```jsonc
+{
+  "plugins": [
+    "opencode-tui-model-router"
+  ],
+  "disabled_providers": []
+}
+```
+
+### 方式二：本地文件
 
 ```bash
 git clone https://github.com/your-username/opencode-tui-model-router.git
@@ -42,7 +61,7 @@ npm install
 npx tsc
 ```
 
-添加到 `~/.config/opencode/opencode.jsonc`：
+然后添加本地路径：
 
 ```jsonc
 {

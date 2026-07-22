@@ -33,7 +33,26 @@ Subagent sessions are transparent — they receive only their role-specific inst
 
 ## Installation
 
-The plugin is loaded as a local file in OpenCode TUI config.
+### Option 1: npm (recommended)
+
+The package is published on npm:
+
+```bash
+npm install -g opencode-tui-model-router
+```
+
+Then add it to your OpenCode TUI config (`~/.config/opencode/opencode.jsonc`):
+
+```jsonc
+{
+  "plugins": [
+    "opencode-tui-model-router"
+  ],
+  "disabled_providers": []
+}
+```
+
+### Option 2: Local file
 
 ```bash
 git clone https://github.com/your-username/opencode-tui-model-router.git
@@ -42,7 +61,7 @@ npm install
 npx tsc
 ```
 
-Then add it to `~/.config/opencode/opencode.jsonc`:
+Then add the local path to your config:
 
 ```jsonc
 {
