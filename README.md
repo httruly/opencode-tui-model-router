@@ -106,6 +106,7 @@ The orchestrator model (your main chat model) dispatches work automatically. You
 > ```
 > Delegate @fast to list all .ts files in the current directory
 > ```
+> Note: the orchestrator does not auto-delegate based on task complexity alone; explicit delegation phrasing produces the most reliable results.
 
 ### Tier Prompts
 
