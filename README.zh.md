@@ -33,17 +33,28 @@
 
 ## 安装
 
+Clone 源码、编译后，把插件复制到 OpenCode TUI 的插件缓存目录：
+
 ```bash
-cd ~/.config/opencode
-npm install https://github.com/httruly/opencode-tui-model-router.git
+git clone https://github.com/httruly/opencode-tui-model-router.git
+cd opencode-tui-model-router
+npm install
+npx tsc
 ```
 
-然后添加到 OpenCode TUI 配置（`~/.config/opencode/opencode.jsonc`）：
+然后把 `dist/` 复制到 TUI 的包缓存目录：
+
+- **Windows**: `C:\Users\你的用户名\.cache\opencode\packages\opencode-tui-model-router@latest\`
+- **macOS / Linux**: `~/.cache/opencode/packages/opencode-tui-model-router@latest/`
+
+目标目录里至少要有 `dist/index.js`、`dist/config.js`、`dist/protocol.js`、`dist/sessions.js`。
+
+最后把绝对路径加到 OpenCode TUI 配置（`~/.config/opencode/opencode.jsonc`）：
 
 ```jsonc
 {
   "plugins": [
-    "opencode-tui-model-router"
+    "C:/Users/你的用户名/.cache/opencode/packages/opencode-tui-model-router@latest/dist/index.js"
   ],
   "disabled_providers": []
 }

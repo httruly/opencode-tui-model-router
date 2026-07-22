@@ -33,17 +33,28 @@ Subagent sessions are transparent — they receive only their role-specific inst
 
 ## Installation
 
+Clone the repo, build it, then copy the compiled plugin into OpenCode TUI's plugin cache:
+
 ```bash
-cd ~/.config/opencode
-npm install https://github.com/httruly/opencode-tui-model-router.git
+git clone https://github.com/httruly/opencode-tui-model-router.git
+cd opencode-tui-model-router
+npm install
+npx tsc
 ```
 
-Then add it to your OpenCode TUI config (`~/.config/opencode/opencode.jsonc`):
+Then copy the `dist/` directory into the TUI's package cache:
+
+- **Windows**: `C:\Users\YourName\.cache\opencode\packages\opencode-tui-model-router@latest\`
+- **macOS / Linux**: `~/.cache/opencode/packages/opencode-tui-model-router@latest/`
+
+The destination must contain at least `dist/index.js`, `dist/config.js`, `dist/protocol.js`, and `dist/sessions.js`.
+
+Finally add the absolute path to your OpenCode TUI config (`~/.config/opencode/opencode.jsonc`):
 
 ```jsonc
 {
   "plugins": [
-    "opencode-tui-model-router"
+    "C:/Users/YourName/.cache/opencode/packages/opencode-tui-model-router@latest/dist/index.js"
   ],
   "disabled_providers": []
 }
