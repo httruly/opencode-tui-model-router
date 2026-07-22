@@ -1,6 +1,16 @@
 # opencode-tui-model-router
 
-An [OpenCode](https://opencode.ai) plugin that routes tasks between **local** and **cloud** LLM models based on task complexity — `@fast` for cheap exploration, `@medium` for implementation, `@heavy` for architecture/debugging.
+An [OpenCode TUI](https://opencode.ai) plugin for automatic model-tier delegation (`@fast` / `@medium` / `@heavy`). Based on the [CLI plugin `opencode-model-router`](https://github.com/marco-jardim/opencode-model-router) by marco-jardim, rewritten for the OpenCode TUI plugin system.
+
+## Why?
+
+Running every coding task on a frontier model is slow and expensive. Most of your workflow is:
+
+- **~40% exploration** — grep, read, search, look up docs (a cheap 1B model handles this fine)
+- **~40% implementation** — edit, test, bugfix (mid-tier cloud model)
+- **~20% architecture** — design decisions, security review, complex debugging (strong model needed)
+
+This plugin teaches the orchestrator to dispatch each type of work to the right-priced tier automatically, with ~210 tokens of overhead. The result: faster iteration, lower cost, without sacrificing quality on the tasks that matter.
 
 ## How It Works
 
@@ -12,11 +22,18 @@ You define **tiers** in `~/.config/opencode/tiers.json`. Each tier maps a model 
 | `@medium` | Implementation, editing, testing | DeepSeek V4 Flash Free |
 | `@heavy` | Architecture, debugging, security review | Step Router V1 |
 
-The plugin injects a **delegation protocol** into the system prompt, telling the orchestrator which tier to dispatch for each type of work. Subagent sessions are transparent — they receive only their role-specific instructions, not the full delegation prompt.
+The plugin injects a **delegation protocol** into the orchestrator's system prompt that teaches it to:
+
+1. **Classify every task** — exploration → `@fast`, implementation → `@medium`, architecture/debug → `@heavy`
+2. **Delegate with `Task(subagent_type="fast"|"medium"|"heavy", prompt=...)`**
+3. **Skip delegation** for trivial tasks (1-2 tool calls, handled directly)
+4. **Never over-qualify** — always prefer the cheapest adequate tier
+
+Subagent sessions are transparent — they receive only their role-specific instructions (stop conditions, caps, return protocol), not the full delegation prompt.
 
 ## Installation
 
-### 1. Build the plugin
+The plugin is loaded as a local file in OpenCode TUI config.
 
 ```bash
 git clone https://github.com/your-username/opencode-tui-model-router.git
@@ -25,21 +42,16 @@ npm install
 npx tsc
 ```
 
-### 2. Configure OpenCode
-
-Add the plugin path to `~/.config/opencode/opencode.jsonc`:
+Then add it to `~/.config/opencode/opencode.jsonc`:
 
 ```jsonc
 {
   "plugins": [
-    "E:/path/to/opencode-tui-model-router/dist/index.js"
+    "/absolute/path/to/opencode-tui-model-router/dist/index.js"
   ],
-  // Ensure the needed providers are enabled
   "disabled_providers": []
 }
 ```
-
-### 3. Create tiers.json
 
 Create `~/.config/opencode/tiers.json`:
 
@@ -77,28 +89,60 @@ Create `~/.config/opencode/tiers.json`:
 }
 ```
 
+Restart OpenCode TUI. `@fast`, `@medium`, `@heavy` agents will appear automatically.
+
 ## Usage
 
-Once installed and configured, `@fast`, `@medium`, `@heavy` agents appear in OpenCode's agent list. The orchestrator model (your main chat model) will automatically delegate to the appropriate tier based on the task.
+The orchestrator model (your main chat model) dispatches work automatically. You can also invoke a tier directly in chat:
 
-### `/tiers` Command
+- `@fast explore the project structure`
+- `@medium implement this feature`
+- `@heavy debug this issue`
 
-Type `/tiers` in chat to see the active delegation configuration:
+### Commands
 
+| Command | Description |
+|---------|-------------|
+| `/tiers` | Show active tier configuration, models, and rules |
+
+### Tier Prompts
+
+Each tier has a structured prompt that includes:
+- **Stop conditions** — cap limits, redundancy detection, return protocol
+- **Role definition** — what the tier should and should not do
+- **Cap limits** — max read-only tool calls per dispatch (configurable via `tierCaps`)
+
+## Configuration
+
+### tiers.json
+
+| Field | Description |
+|-------|-------------|
+| `activePreset` | Which preset to use (e.g. `"local-hybrid"`) |
+| `activeMode` | Routing mode (optional, e.g. `"normal"`, `"budget"`, `"quality"`, `"deep"`) |
+| `defaultTier` | Default tier when classification is ambiguous |
+| `rules` | Delegation rules injected into the system prompt |
+| `presets` | Named presets containing tier definitions |
+| `tierCaps` | Maximum read-only tool calls per dispatch per tier |
+| `tierPrompts` | Custom role prompts for each tier |
+| `modes` | Routing mode definitions with override rules and default tiers |
+
+### Multiple Presets
+
+You can define multiple presets and switch between them by changing `activePreset`:
+
+```json
+{
+  "activePreset": "local-hybrid",
+  "presets": {
+    "local-hybrid": { /* local + cloud mix */ },
+    "all-cloud": { /* all cloud models */ },
+    "budget": { /* cheapest models only */ }
+  }
+}
 ```
-# Model Delegation Tiers
-Active preset: local-hybrid
 
-## @fast -> minicpm5/minicpm5
-Local model for cheap exploration
-...
-
-## Delegation Rules
-- min(cost, adequate-tier)
-...
-```
-
-## Plugin Architecture
+## Architecture
 
 ```
 src/
@@ -108,10 +152,21 @@ src/
   sessions.ts  — Session store that tracks subagent vs orchestrator sessions
 ```
 
-The plugin hooks into:
+Hooks:
 - **`config`** — Registers `@fast`/`@medium`/`@heavy` agents with model, role prompt, and caps
 - **`experimental.chat.system.transform`** — Injects delegation protocol into orchestrator prompts; skips for subagent sessions
 - **`chat.message`** — Tracks sessions to distinguish orchestrator from subagent dispatches
+
+## Differences from opencode-model-router (CLI)
+
+| | opencode-model-router (CLI) | opencode-tui-model-router (this) |
+|---|---|---|
+| Platform | OpenCode CLI (`opencode.json`) | OpenCode TUI (`opencode.jsonc`) |
+| Config | Built-in presets with `/preset` cmd | External `tiers.json` file |
+| Agents | Injected via plugin hooks | OpenCode TUI `agent` config |
+| Commands | `/tiers`, `/preset`, `/budget`, `/annotate-plan` | `/tiers` |
+| Provider mgmt | Multi-provider with fallback | Relies on OpenCode provider config |
+| Modes | `normal`, `budget`, `quality`, `deep` | Optional via `modes` in tiers.json |
 
 ## License
 
